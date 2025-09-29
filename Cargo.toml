@@ -17,6 +17,7 @@ libc = "0.2.176"
 
 [dev-dependencies]
 regex = "1.0"
+rust-common-tests = { path = "../rust-common-tests" }
 
 [[test]]
 name = "integration"

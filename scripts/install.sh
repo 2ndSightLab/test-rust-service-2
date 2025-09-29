@@ -57,7 +57,7 @@ BINARY_PATH="target/$CURRENT_ARCH/$BINARY_TYPE/$SERVICE_NAME"
 # Read directories from config file
 INSTALL_DIR=$(read_config_value "INSTALL_DIR" "$CONFIG_FILE" "$DEBUG_SUFFIX")
 LOG_DIR=$(read_config_value "LOG_FILE_PATH" "$CONFIG_FILE" "$DEBUG_SUFFIX")
-CONFIG_DIR=$(read_config_value "CONFIG_DIR" "$CONFIG_FILE" "$DEBUG_SUFFIX")
+CONFIG_DIR="$INSTALL_DIR"
 SERVICE_NAME=$(read_config_value "SERVICE_NAME" "$CONFIG_FILE")
 
 # Set service user based on debug mode
@@ -88,7 +88,6 @@ fi
 echo "Creating directories..."
 sudo mkdir -p "$INSTALL_DIR"
 sudo mkdir -p "$LOG_DIR"
-sudo mkdir -p "$CONFIG_DIR"
 
 # Copy binary
 echo "Installing binary..."
@@ -103,7 +102,6 @@ LOCAL_CONFIG="$PROJECT_ROOT/config/service.toml"
 
 if [[ -f "$LOCAL_CONFIG" ]]; then
     sudo cp "$LOCAL_CONFIG" "$CONFIG_DIR/"
-    sudo cp "$LOCAL_CONFIG" "$INSTALL_DIR/"
 else
     echo "Error: Local config file not found at $LOCAL_CONFIG"
     exit 1
@@ -115,13 +113,20 @@ PROJECT_ROOT=$(dirname "$SCRIPT_DIR")
 LOCAL_ACTION_CONFIG="$PROJECT_ROOT/config/action.toml"
 if [[ -f "$LOCAL_ACTION_CONFIG" ]]; then
     sudo cp "$LOCAL_ACTION_CONFIG" "$CONFIG_DIR/"
-    sudo cp "$LOCAL_ACTION_CONFIG" "$INSTALL_DIR/"
 fi
 
 # Set ownership
 echo "Setting permissions..."
 sudo chown -R "$SERVICE_USER:$SERVICE_USER" "$INSTALL_DIR"
 sudo chown -R "$SERVICE_USER:$SERVICE_USER" "$LOG_DIR"
+sudo chown root:root "$CONFIG_DIR/service.toml"
+sudo chmod 644 "$CONFIG_DIR/service.toml"
+
+# Set permissions for action config if it exists
+if [[ -f "$CONFIG_DIR/action.toml" ]]; then
+    sudo chown root:root "$CONFIG_DIR/action.toml"
+    sudo chmod 644 "$CONFIG_DIR/action.toml"
+fi
 sudo chown root:root "$CONFIG_DIR/service.toml"
 sudo chmod 644 "$CONFIG_DIR/service.toml"
 

@@ -57,6 +57,15 @@ find_config_file() {
         return 0
     fi
     
+    # If service.toml not found, try lib.toml as fallback
+    if [[ "$CONFIG_NAME" == "service.toml" ]]; then
+        local LIB_CONFIG="$PROJECT_ROOT/config/lib.toml"
+        if [[ -f "$LIB_CONFIG" ]]; then
+            echo "$LIB_CONFIG"
+            return 0
+        fi
+    fi
+    
     echo "Error: Config file $CONFIG_NAME not found in local config directory" >&2
     return 1
 }

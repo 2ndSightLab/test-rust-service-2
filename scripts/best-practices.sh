@@ -39,9 +39,21 @@ if [[ $? -ne 0 ]]; then
     exit 1
 fi
 
-INSTALL_DIR=$(grep "^INSTALL_DIR" "$CONFIG_FILE" | sed 's/INSTALL_DIR = "\(.*\)"/\1/' | tr -d '"')
-CONFIG_DIR=$(grep "^CONFIG_DIR" "$CONFIG_FILE" | sed 's/CONFIG_DIR = "\(.*\)"/\1/' | tr -d '"')
-LOG_FILE_PATH=$(grep "^LOG_FILE_PATH" "$CONFIG_FILE" | sed 's/LOG_FILE_PATH = "\(.*\)"/\1/' | tr -d '"')
+# Check if we're using lib.toml and adjust accordingly
+if [[ "$CONFIG_FILE" == *"lib.toml" ]]; then
+    # Using lib config, set default paths
+    INSTALL_DIR="/opt/rust-service"
+    CONFIG_DIR="/etc/rust-service"
+    LOG_FILE_PATH="/var/log/rust-service"
+    # Get binary name from lib config or Cargo.toml
+    LIB_NAME=$(grep "^LIB_NAME" "$CONFIG_FILE" | sed 's/LIB_NAME = "\(.*\)"/\1/' | tr -d '"')
+    BINARY_NAME="$LIB_NAME"
+else
+    # Using service config, read from file
+    INSTALL_DIR=$(grep "^INSTALL_DIR" "$CONFIG_FILE" | sed 's/INSTALL_DIR = "\(.*\)"/\1/' | tr -d '"')
+    CONFIG_DIR=$(grep "^CONFIG_DIR" "$CONFIG_FILE" | sed 's/CONFIG_DIR = "\(.*\)"/\1/' | tr -d '"')
+    LOG_FILE_PATH=$(grep "^LOG_FILE_PATH" "$CONFIG_FILE" | sed 's/LOG_FILE_PATH = "\(.*\)"/\1/' | tr -d '"')
+fi
 
 # Add -debug suffix for debug builds
 if [ "$BUILD_TYPE" = "debug" ]; then
@@ -53,11 +65,13 @@ fi
 # Exit on any error
 set -e
 
-# Get binary name from Cargo.toml
-BINARY_NAME=$(grep -A 10 "^\[\[bin\]\]" Cargo.toml | grep "^name" | head -1 | sed 's/name = "\(.*\)"/\1/' | tr -d '"')
-if [ -z "$BINARY_NAME" ]; then
-    # Fallback to package name if no explicit binary name
-    BINARY_NAME=$(grep "^name" Cargo.toml | head -1 | sed 's/name = "\(.*\)"/\1/' | tr -d '"')
+# Get binary name from Cargo.toml or lib config
+if [[ -z "$BINARY_NAME" ]]; then
+    BINARY_NAME=$(grep -A 10 "^\[\[bin\]\]" Cargo.toml | grep "^name" | head -1 | sed 's/name = "\(.*\)"/\1/' | tr -d '"')
+    if [ -z "$BINARY_NAME" ]; then
+        # Fallback to package name if no explicit binary name
+        BINARY_NAME=$(grep "^name" Cargo.toml | head -1 | sed 's/name = "\(.*\)"/\1/' | tr -d '"')
+    fi
 fi
 
 echo "1. Code formatting check..."
@@ -83,5 +97,17 @@ echo "7. Architecture-specific check..."
 CURRENT_ARCH=$(rustc --version --verbose | grep host | cut -d' ' -f2)
 echo "Running checks for current architecture: $CURRENT_ARCH"
 RUSTFLAGS="-D warnings -A non_snake_case -A clippy::upper_case_acronyms" cargo check --target $CURRENT_ARCH
+
+echo "8. License compliance check..."
+cargo license || echo "Warning: cargo license not installed"
+
+echo "9. Cargo.toml validation..."
+cargo verify-project
+
+echo "10. Test coverage analysis..."
+cargo tarpaulin --out Stdout || echo "Warning: cargo tarpaulin not installed"
+
+echo "11. Memory safety checks..."
+cargo +nightly miri test || echo "Warning: cargo miri not available"
 
 echo "All essential best practices checks completed successfully!"

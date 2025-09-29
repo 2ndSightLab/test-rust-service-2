@@ -59,7 +59,7 @@ echo "$choice" | "$SCRIPT_DIR_RELATIVE"/install.sh
 
 # Read directories from config file
 INSTALL_DIR=$(read_config_value "INSTALL_DIR" "$CONFIG_FILE" "$DEBUG_SUFFIX")
-CONFIG_DIR=$(read_config_value "CONFIG_DIR" "$CONFIG_FILE" "$DEBUG_SUFFIX")
+CONFIG_DIR="$INSTALL_DIR"
 
 # Validate target user exists and has correct setup
 if ! id "$SERVICE_USER" &>/dev/null; then
