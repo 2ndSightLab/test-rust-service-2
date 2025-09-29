@@ -2,6 +2,9 @@
 
 A Rust service binary that demonstrates how to use the [rust-service](../rust-service) library to build a secure, production-ready service. This service prints the current time periodically with comprehensive logging, configuration management, and security validation. Also uses common unit tests repository: rust-common-tests
 
+/scripts/run.sh to run the service (will also build and deploy it)
+/scripts/test.sh to run the tests (will also build and deploy it)
+
 ## Features
 
 - **Time Action**: Prints current UTC timestamp every configured interval
