@@ -2,8 +2,24 @@
 
 A Rust service binary that demonstrates how to use the [rust-service](../rust-service) library to build a secure, production-ready service. This service prints the current time periodically with comprehensive logging, configuration management, and security validation. Also uses common unit tests repository: rust-common-tests
 
-/scripts/run.sh to run the service (will also build and deploy it)
-/scripts/test.sh to run the tests (will also build and deploy it)
+__Building and Testing__
+
+```bash
+# Build
+./scripts/build.sh
+
+# Run tests
+./scripts/test.sh
+
+# Check best practices
+./scripts/best-practices.sh
+
+# Install the program
+./scripts/install.sh
+
+# Run service
+./scripts/run.sh
+```
 
 ## Features
 
@@ -30,25 +46,6 @@ Key settings include:
 - `DISK_THRESHOLD`: Disk usage alert threshold (default: 80%)
 - `INSTALL_DIR`: Installation directory (/opt/test-rust-service)
 - `CONFIG_DIR`: Configuration directory (/etc/test-rust-service)
-
-## Building and Testing
-
-```bash
-# Build
-./scripts/build.sh
-
-# Run tests
-./scripts/test.sh
-
-# Check best practices
-./scripts/best-practices.sh
-
-# Install the program
-./scripts/install.sh
-
-# Run service
-./scripts/run.sh
-```
 
 ## Dependencies
 
