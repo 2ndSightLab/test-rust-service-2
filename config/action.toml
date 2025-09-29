@@ -1,0 +1,4 @@
+# Time action configuration for test-rust-service
+
+# Time interval in seconds between time outputs
+TIME_INTERVAL = 5

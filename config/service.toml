@@ -1,0 +1,48 @@
+# SECURITY NOTE: The application ONLY reads from hardcoded system paths (/etc, /opt, /usr/local/etc)
+# and will NEVER load configuration from the current working directory.
+# See src/config/config.rs ALLOWED_CONFIGS for the actual paths used.
+
+# Directory path where log files will be written
+LOG_FILE_PATH = "/var/log/test-rust-service"
+
+# Installation directory for the service binary
+INSTALL_DIR = "/opt/test-rust-service"
+
+# Configuration directory for the service
+CONFIG_DIR = "/etc/test-rust-service"
+
+# Name of the service (used for display and user validation)
+SERVICE_NAME = "test-rust-service"
+
+# Memory usage threshold percentage (1-100) - service exits if exceeded
+MEMORY_THRESHOLD = 80
+
+# Disk usage threshold percentage (1-100) - service exits if exceeded
+DISK_THRESHOLD = 80
+
+# Minimum file descriptor limit required for service to start
+MIN_FD_LIMIT = 1024
+
+# Maximum allowed length for service name (security limit)
+MAX_SERVICE_NAME_LEN = 32
+
+# Maximum allowed length for log file path (security limit)
+MAX_LOG_PATH_LEN = 500
+
+# Minimum log interval in milliseconds (rate limiting)
+MIN_LOG_INTERVAL_MS = 100
+
+# Maximum log file size in bytes before rotation
+MAX_LOG_FILE_SIZE = 10485760
+
+# Maximum time interval in seconds
+MAX_TIME_INTERVAL = 86400
+
+# Maximum threshold percentage
+MAX_THRESHOLD_PERCENT = 100
+
+# Maximum FD limit
+MAX_FD_LIMIT = 65536
+
+# Maximum config field lengths
+MAX_CONFIG_FIELD_LEN = 2000
