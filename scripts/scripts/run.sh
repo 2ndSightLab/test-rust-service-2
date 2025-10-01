@@ -1,11 +1,12 @@
 #!/bin/bash
 set -e
 
-# Set standard directory variables and source all functions
-SCRIPTS_DIR="$(dirname "$(readlink -f "$0")")"
-for func in "$SCRIPTS_DIR/functions"/*.sh; do source "$func"; done
-PROJECT_DIR=$(get_project_dir)
+SCRIPT_DIR=$(dirname "$(readlink -f "$0")")
 SCRIPT_DIR_RELATIVE=$(dirname "$0")
+
+# Source config reading functions
+source "$SCRIPT_DIR/functions/read_config.sh"
+source "$SCRIPT_DIR/functions/find_config.sh"
 
 echo "Select binary type to run:"
 echo "1) Debug"
@@ -28,34 +29,36 @@ case $choice in
 esac
 
 # Find config file
-PROJECT_NAME=$(get_project_name)
-CONFIG_FILE=$(get_config_file "$PROJECT_NAME" "$BUILD_TYPE")
+CONFIG_FILE=$(find_config_file "service.toml")
+if [[ $? -ne 0 ]]; then
+    exit 1
+fi
 
-# Get project name
-PROJECT_NAME=$(get_project_name)
+# Read service name from config
+SERVICE_NAME=$(grep "^SERVICE_NAME" "$CONFIG_FILE" | sed 's/SERVICE_NAME = "\(.*\)"/\1/' | tr -d '"')
 
 # Get current architecture
 CURRENT_ARCH=$(rustc --version --verbose | grep host | cut -d' ' -f2)
 
 # Check if binary exists, if not build it
-BINARY_PATH="target/$CURRENT_ARCH/$BUILD_TYPE/$PROJECT_NAME"
+BINARY_PATH="target/$CURRENT_ARCH/$BUILD_TYPE/$SERVICE_NAME"
 if [[ ! -f "$BINARY_PATH" ]]; then
     echo "Binary not found at $BINARY_PATH, building..."
-    echo "$choice" | "$SCRIPTS_DIR"/build.sh
+    echo "$choice" | "$SCRIPT_DIR_RELATIVE"/build.sh
 fi
 
 # Set service user based on debug mode
 if [[ "$choice" == "1" ]]; then
-    SERVICE_USER="$PROJECT_NAME-debug"
+    SERVICE_USER="$SERVICE_NAME-debug"
 else
-    SERVICE_USER="$PROJECT_NAME"
+    SERVICE_USER="$SERVICE_NAME"
 fi
 
 # First run the install.sh script
-echo "$choice" | "$SCRIPTS_DIR_RELATIVE"/install.sh
+echo "$choice" | "$SCRIPT_DIR_RELATIVE"/install.sh
 
 # Read directories from config file
-INSTALL_DIR=$(get_install_directory "$BUILD_TYPE")
+INSTALL_DIR=$(read_config_value "INSTALL_DIR" "$CONFIG_FILE" "$DEBUG_SUFFIX")
 CONFIG_DIR="$INSTALL_DIR"
 
 # Validate target user exists and has correct setup
@@ -65,8 +68,8 @@ if ! id "$SERVICE_USER" &>/dev/null; then
 fi
 
 # Verify binary exists and is executable
-if [[ ! -x "$INSTALL_DIR/$PROJECT_NAME" ]]; then
-    echo "Error: Service binary not found or not executable at $INSTALL_DIR/$PROJECT_NAME"
+if [[ ! -x "$INSTALL_DIR/$SERVICE_NAME" ]]; then
+    echo "Error: Service binary not found or not executable at $INSTALL_DIR/$SERVICE_NAME"
     exit 1
 fi
 
@@ -84,4 +87,4 @@ fi
 
 # Run the program with validated user
 echo "Starting service..."
-sudo -u "$SERVICE_USER" "$INSTALL_DIR/$PROJECT_NAME"
+sudo -u "$SERVICE_USER" "$INSTALL_DIR/$SERVICE_NAME"

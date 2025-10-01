@@ -1,10 +1,5 @@
 #!/bin/bash
 
-# Set standard directory variables and source all functions
-SCRIPTS_DIR="$(dirname "$(readlink -f "$0")")"
-for func in "$SCRIPTS_DIR/functions"/*.sh; do source "$func"; done
-PROJECT_DIR=$(get_project_dir)
-
 echo "Running Rust Best Practices Check"
 echo "================================="
 
@@ -33,24 +28,38 @@ esac
 echo "Using $BUILD_TYPE build..."
 
 # Read directory paths from config file
+SCRIPT_DIR=$(dirname "$(readlink -f "$0")")
+
+# Source config reading functions
+source "$SCRIPT_DIR/functions/find_config.sh"
+
 # Find config file
-PROJECT_NAME=$(get_project_name)
-CONFIG_FILE=$(get_config_file "$PROJECT_NAME" "$BUILD_TYPE")
+CONFIG_FILE=$(find_config_file "service.toml")
+if [[ $? -ne 0 ]]; then
+    exit 1
+fi
 
 # Check if we're using lib.toml and adjust accordingly
 if [[ "$CONFIG_FILE" == *"lib.toml" ]]; then
-    # Using lib config, get install directory from function
-    INSTALL_DIR=$(get_install_directory "$BUILD_TYPE")
+    # Using lib config, set default paths
+    INSTALL_DIR="/opt/rust-service"
     CONFIG_DIR="/etc/rust-service"
     LOG_FILE_PATH="/var/log/rust-service"
     # Get binary name from lib config or Cargo.toml
-    LIB_NAME=$(read_config_value "LIB_NAME" "$CONFIG_FILE")
+    LIB_NAME=$(grep "^LIB_NAME" "$CONFIG_FILE" | sed 's/LIB_NAME = "\(.*\)"/\1/' | tr -d '"')
     BINARY_NAME="$LIB_NAME"
 else
-    # Using service config, get install directory from function
-    INSTALL_DIR=$(get_install_directory "$BUILD_TYPE")
-    CONFIG_DIR=$(read_config_value "CONFIG_DIR" "$CONFIG_FILE")
-    LOG_FILE_PATH=$(read_config_value "LOG_FILE_PATH" "$CONFIG_FILE")
+    # Using service config, read from file
+    INSTALL_DIR=$(grep "^INSTALL_DIR" "$CONFIG_FILE" | sed 's/INSTALL_DIR = "\(.*\)"/\1/' | tr -d '"')
+    CONFIG_DIR=$(grep "^CONFIG_DIR" "$CONFIG_FILE" | sed 's/CONFIG_DIR = "\(.*\)"/\1/' | tr -d '"')
+    LOG_FILE_PATH=$(grep "^LOG_FILE_PATH" "$CONFIG_FILE" | sed 's/LOG_FILE_PATH = "\(.*\)"/\1/' | tr -d '"')
+fi
+
+# Add -debug suffix for debug builds
+if [ "$BUILD_TYPE" = "debug" ]; then
+    INSTALL_DIR="${INSTALL_DIR}-debug"
+    CONFIG_DIR="${CONFIG_DIR}-debug"
+    LOG_FILE_PATH="${LOG_FILE_PATH}-debug"
 fi
 
 # Exit on any error
@@ -58,15 +67,16 @@ set -e
 
 # Get binary name from config file (same as install.sh)
 if [[ -z "$BINARY_NAME" ]]; then
-# Get project name
-PROJECT_NAME=$(get_project_name)
-    # Set binary name based on project type
-    if [[ -f "$PROJECT_DIR/config/service.toml" ]] || [[ "$CONFIG_FILE" == *"service.toml" ]]; then
-        BINARY_NAME="$PROJECT_NAME"
+    # First check current working directory for service config (when called from service project)
+    if [[ -f "config/service.toml" ]]; then
+        BINARY_NAME=$(grep "^SERVICE_NAME" "config/service.toml" | sed 's/SERVICE_NAME = "\(.*\)"/\1/' | tr -d '"')
+    # Then check the config file found by find_config_file
+    elif [[ "$CONFIG_FILE" == *"service.toml" ]]; then
+        BINARY_NAME=$(grep "^SERVICE_NAME" "$CONFIG_FILE" | sed 's/SERVICE_NAME = "\(.*\)"/\1/' | tr -d '"')
     # Finally fall back to lib config
     else
-        if [[ -f "$PROJECT_DIR/config/lib.toml" ]]; then
-            LIB_NAME=$(read_config_value "LIB_NAME" "$PROJECT_DIR/config/lib.toml")
+        if [[ -f "config/lib.toml" ]]; then
+            LIB_NAME=$(grep "^LIB_NAME" "config/lib.toml" | sed 's/LIB_NAME = "\(.*\)"/\1/' | tr -d '"')
         fi
         BINARY_NAME="$LIB_NAME"
     fi
@@ -93,9 +103,9 @@ CALLING_DIR=$(pwd)
 if [[ -f "$CALLING_DIR/config/service.toml" ]]; then
     # We're being called from a service project, build and check its binary
     RUSTFLAGS="-D warnings -A non_snake_case -A clippy::upper_case_acronyms" cargo build $BUILD_FLAG
-    SERVICE_BINARY="$PROJECT_NAME"
+    SERVICE_BINARY=$(grep "^SERVICE_NAME" "$CALLING_DIR/config/service.toml" | sed 's/SERVICE_NAME = "\(.*\)"/\1/' | tr -d '"')
     ls -lh target/$BUILD_TYPE/$SERVICE_BINARY
-elif [[ -f "$PROJECT_DIR/config/lib.toml" ]] && [[ ! -f "$PROJECT_DIR/config/service.toml" ]] && [[ ! -f "$PROJECT_DIR/src/main.rs" ]]; then
+elif [[ -f "config/lib.toml" ]] && [[ ! -f "config/service.toml" ]] && [[ ! -f "src/main.rs" ]]; then
     # We're in a library project that doesn't produce binaries
     echo "Skipping binary size analysis for library project"
 else

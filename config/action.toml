@@ -2,3 +2,6 @@
 
 # Time interval in seconds between time outputs
 TIME_INTERVAL = 5
+
+# Message to display
+MESSAGE = "Hello"

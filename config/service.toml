@@ -5,9 +5,6 @@
 # Directory path where log files will be written
 LOG_FILE_PATH = "/var/log/test-rust-service"
 
-# Installation directory for the service binary
-INSTALL_DIR = "/opt/test-rust-service"
-
 # Configuration directory (same as install directory)
 CONFIG_DIR = "/opt/test-rust-service"
 

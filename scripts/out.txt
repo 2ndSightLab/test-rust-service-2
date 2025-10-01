@@ -1,0 +1,886 @@
+================================
+FILE: /home/ec2-user/foxy/rust-service/tests/integration.rs
+Category_name: integration
+================================
+     integration::app::config_discovery_test::test_config_file_precedence
+
+running 1 test
+test integration::app::config_discovery_test::test_config_file_precedence ... FAILED
+
+failures:
+
+---- integration::app::config_discovery_test::test_config_file_precedence stdout ----
+
+thread 'integration::app::config_discovery_test::test_config_file_precedence' panicked at tests/integration/app/config_discovery_test.rs:6:52:
+called `Result::unwrap()` on an `Err` value: "Binary not found at /opt/rust-service/test-rust-service. Run './actions/test.sh' to install it."
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    integration::app::config_discovery_test::test_config_file_precedence
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 15 filtered out; finished in 0.00s
+
+101
+     integration::app::logging_integration_test::test_log_file_creation
+
+running 1 test
+test integration::app::logging_integration_test::test_log_file_creation ... FAILED
+
+failures:
+
+---- integration::app::logging_integration_test::test_log_file_creation stdout ----
+RUNNING: test_log_file_creation - Testing log file creation and permissions
+Testing log file creation...
+Starting service...
+
+thread 'integration::app::logging_integration_test::test_log_file_creation' panicked at tests/integration/app/logging_integration_test.rs:15:10:
+Failed to start service: Os { code: 2, kind: NotFound, message: "No such file or directory" }
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    integration::app::logging_integration_test::test_log_file_creation
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 15 filtered out; finished in 0.00s
+
+101
+     integration::app::monitoring_integration_test::test_file_descriptor_limits
+
+running 1 test
+test integration::app::monitoring_integration_test::test_file_descriptor_limits ... FAILED
+
+failures:
+
+---- integration::app::monitoring_integration_test::test_file_descriptor_limits stdout ----
+RUNNING: test_file_descriptor_limits - Testing file descriptor limit validation exists
+Testing that fd limit checking is available...
+
+thread 'integration::app::monitoring_integration_test::test_file_descriptor_limits' panicked at tests/integration/app/monitoring_integration_test.rs:47:10:
+Failed to start service: Os { code: 2, kind: NotFound, message: "No such file or directory" }
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    integration::app::monitoring_integration_test::test_file_descriptor_limits
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 15 filtered out; finished in 0.00s
+
+101
+     integration::app::monitoring_integration_test::test_system_resource_monitoring
+
+running 1 test
+test integration::app::monitoring_integration_test::test_system_resource_monitoring ... FAILED
+
+failures:
+
+---- integration::app::monitoring_integration_test::test_system_resource_monitoring stdout ----
+RUNNING: test_system_resource_monitoring - Testing system resource monitoring exists
+Testing that monitoring functions are available...
+
+thread 'integration::app::monitoring_integration_test::test_system_resource_monitoring' panicked at tests/integration/app/monitoring_integration_test.rs:19:10:
+Failed to start service: Os { code: 2, kind: NotFound, message: "No such file or directory" }
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    integration::app::monitoring_integration_test::test_system_resource_monitoring
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 15 filtered out; finished in 0.00s
+
+101
+     integration::app::security_workflow_test::test_input_validation
+
+running 1 test
+test integration::app::security_workflow_test::test_input_validation ... FAILED
+
+failures:
+
+---- integration::app::security_workflow_test::test_input_validation stdout ----
+RUNNING: test_input_validation - Testing input validation and security checks
+Testing input validation with oversized service name...
+
+thread 'integration::app::security_workflow_test::test_input_validation' panicked at tests/integration/app/security_workflow_test.rs:40:10:
+Failed to start service: Os { code: 2, kind: NotFound, message: "No such file or directory" }
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    integration::app::security_workflow_test::test_input_validation
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 15 filtered out; finished in 0.00s
+
+101
+     integration::app::security_workflow_test::test_root_user_prevention
+
+running 1 test
+test integration::app::security_workflow_test::test_root_user_prevention ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 15 filtered out; finished in 0.00s
+
+0
+     integration::app::service_lifecycle_test::test_service_binary_exists
+
+running 1 test
+test integration::app::service_lifecycle_test::test_service_binary_exists ... FAILED
+
+failures:
+
+---- integration::app::service_lifecycle_test::test_service_binary_exists stdout ----
+RUNNING: test_service_binary_exists - Testing service binary installation
+
+thread 'integration::app::service_lifecycle_test::test_service_binary_exists' panicked at tests/integration/app/service_lifecycle_test.rs:9:5:
+Binary should exist at /opt/rust-service/test-rust-service
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    integration::app::service_lifecycle_test::test_service_binary_exists
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 15 filtered out; finished in 0.00s
+
+101
+     integration::app::service_lifecycle_test::test_service_config_exists
+
+running 1 test
+test integration::app::service_lifecycle_test::test_service_config_exists ... FAILED
+
+failures:
+
+---- integration::app::service_lifecycle_test::test_service_config_exists stdout ----
+RUNNING: test_service_config_exists - Testing service configuration installation
+
+thread 'integration::app::service_lifecycle_test::test_service_config_exists' panicked at tests/integration/app/service_lifecycle_test.rs:23:5:
+Config should exist at /etc/rust-service/service.toml
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    integration::app::service_lifecycle_test::test_service_config_exists
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 15 filtered out; finished in 0.00s
+
+101
+     integration::app::shutdown_handling_test::test_cleanup_on_exit
+
+running 1 test
+test integration::app::shutdown_handling_test::test_cleanup_on_exit ... FAILED
+
+failures:
+
+---- integration::app::shutdown_handling_test::test_cleanup_on_exit stdout ----
+RUNNING: test_cleanup_on_exit - Testing cleanup on forced process termination
+Testing cleanup on forced exit...
+
+thread 'integration::app::shutdown_handling_test::test_cleanup_on_exit' panicked at tests/integration/app/shutdown_handling_test.rs:62:10:
+Failed to start service: Os { code: 2, kind: NotFound, message: "No such file or directory" }
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    integration::app::shutdown_handling_test::test_cleanup_on_exit
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 15 filtered out; finished in 0.00s
+
+101
+     integration::app::shutdown_handling_test::test_graceful_shutdown
+
+running 1 test
+test integration::app::shutdown_handling_test::test_graceful_shutdown ... FAILED
+
+failures:
+
+---- integration::app::shutdown_handling_test::test_graceful_shutdown stdout ----
+RUNNING: test_graceful_shutdown - Testing graceful shutdown with SIGINT signal
+Testing graceful shutdown with SIGINT (3 seconds)...
+
+thread 'integration::app::shutdown_handling_test::test_graceful_shutdown' panicked at tests/integration/app/shutdown_handling_test.rs:17:48:
+Failed to read config file: Os { code: 2, kind: NotFound, message: "No such file or directory" }
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    integration::app::shutdown_handling_test::test_graceful_shutdown
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 15 filtered out; finished in 0.00s
+
+101
+     integration::app::test_graceful_shutdown_handling::test_graceful_shutdown_handling
+
+running 1 test
+test integration::app::test_graceful_shutdown_handling::test_graceful_shutdown_handling ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 15 filtered out; finished in 0.10s
+
+0
+     integration::app::test_prerequisites::test_debug_installation_exists
+
+running 1 test
+test integration::app::test_prerequisites::test_debug_installation_exists ... FAILED
+
+failures:
+
+---- integration::app::test_prerequisites::test_debug_installation_exists stdout ----
+
+thread 'integration::app::test_prerequisites::test_debug_installation_exists' panicked at tests/integration/app/test_prerequisites.rs:72:9:
+Integration test prerequisites not met: Binary not found at /opt/rust-service/test-rust-service. Run './actions/test.sh' to install it.
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    integration::app::test_prerequisites::test_debug_installation_exists
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 15 filtered out; finished in 0.00s
+
+101
+     integration::app::test_prerequisites_check::test_prerequisites_check
+
+running 1 test
+test integration::app::test_prerequisites_check::test_prerequisites_check ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 15 filtered out; finished in 0.10s
+
+0
+     integration::app::test_security_workflow_integration::test_security_workflow_integration
+
+running 1 test
+test integration::app::test_security_workflow_integration::test_security_workflow_integration ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 15 filtered out; finished in 0.10s
+
+0
+     integration::app::test_system_resource_monitoring::test_system_resource_monitoring
+
+running 1 test
+test integration::app::test_system_resource_monitoring::test_system_resource_monitoring ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 15 filtered out; finished in 0.10s
+
+0
+
+================================
+FILE: /home/ec2-user/foxy/rust-service/tests/unit.rs
+Category_name: unit
+================================
+     unit::app::config_tests::test_config_validation_invalid_service_name
+
+running 1 test
+test unit::app::config_tests::test_config_validation_invalid_service_name ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 15 filtered out; finished in 0.00s
+
+0
+     unit::app::config_tests::test_config_validation_invalid_threshold
+
+running 1 test
+test unit::app::config_tests::test_config_validation_invalid_threshold ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 15 filtered out; finished in 0.00s
+
+0
+     unit::app::config_tests::test_config_validation_valid
+
+running 1 test
+test unit::app::config_tests::test_config_validation_valid ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 15 filtered out; finished in 0.00s
+
+0
+     unit::app::config_tests::test_service_config_loading
+
+running 1 test
+test unit::app::config_tests::test_service_config_loading ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 15 filtered out; finished in 0.00s
+
+0
+     unit::app::monitoring_tests::test_parse_memory_value_invalid
+
+running 1 test
+test unit::app::monitoring_tests::test_parse_memory_value_invalid ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 15 filtered out; finished in 0.00s
+
+0
+     unit::app::monitoring_tests::test_parse_memory_value_missing_prefix
+
+running 1 test
+test unit::app::monitoring_tests::test_parse_memory_value_missing_prefix ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 15 filtered out; finished in 0.00s
+
+0
+     unit::app::monitoring_tests::test_parse_memory_value_valid
+
+running 1 test
+test unit::app::monitoring_tests::test_parse_memory_value_valid ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 15 filtered out; finished in 0.00s
+
+0
+     unit::app::monitoring_unit_tests::test_parse_memory_value_invalid
+
+running 1 test
+test unit::app::monitoring_unit_tests::test_parse_memory_value_invalid ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 15 filtered out; finished in 0.00s
+
+0
+     unit::app::monitoring_unit_tests::test_parse_memory_value_missing_prefix
+
+running 1 test
+test unit::app::monitoring_unit_tests::test_parse_memory_value_missing_prefix ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 15 filtered out; finished in 0.00s
+
+0
+     unit::app::monitoring_unit_tests::test_parse_memory_value_valid
+
+running 1 test
+test unit::app::monitoring_unit_tests::test_parse_memory_value_valid ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 15 filtered out; finished in 0.00s
+
+0
+     unit::app::test_best_practices::test_best_practices
+
+running 1 test
+test unit::app::test_best_practices::test_best_practices ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 15 filtered out; finished in 0.89s
+
+0
+     unit::app::test_config_standards::test_config_standards
+
+running 1 test
+test unit::app::test_config_standards::test_config_standards ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 15 filtered out; finished in 0.10s
+
+0
+     unit::app::test_script_validation::test_script_validation
+
+running 1 test
+test unit::app::test_script_validation::test_script_validation ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 15 filtered out; finished in 0.10s
+
+0
+     unit::app::test_toml_lint::test_toml_lint
+
+running 1 test
+test unit::app::test_toml_lint::test_toml_lint ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 15 filtered out; finished in 0.10s
+
+0
+     unit::app::test_variable_naming::test_variable_naming
+
+running 1 test
+test unit::app::test_variable_naming::test_variable_naming ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 15 filtered out; finished in 0.10s
+
+0
+
+================================
+FILE: /home/ec2-user/foxy/rust-service/tests/security_checks.rs
+Category_name: security_checks
+================================
+     security_checks::common::test_code_separation::test_code_separation
+
+running 1 test
+test security_checks::common::test_code_separation::test_code_separation ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 6 filtered out; finished in 0.10s
+
+0
+     security_checks::common::test_dependency_audit::test_dependency_audit
+
+running 1 test
+test security_checks::common::test_dependency_audit::test_dependency_audit ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 6 filtered out; finished in 0.66s
+
+0
+     security_checks::common::test_dependency_validation::test_dependency_validation
+
+running 1 test
+test security_checks::common::test_dependency_validation::test_dependency_validation ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 6 filtered out; finished in 0.10s
+
+0
+     security_checks::common::test_file_permissions::test_file_permissions
+
+running 1 test
+test security_checks::common::test_file_permissions::test_file_permissions ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 6 filtered out; finished in 0.10s
+
+0
+     security_checks::common::test_hardcoded_secrets::test_hardcoded_secrets
+
+running 1 test
+test security_checks::common::test_hardcoded_secrets::test_hardcoded_secrets ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 6 filtered out; finished in 0.10s
+
+0
+     security_checks::common::test_process_exit::test_process_exit
+
+running 1 test
+test security_checks::common::test_process_exit::test_process_exit ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 6 filtered out; finished in 0.10s
+
+0
+
+================================
+FILE: /home/ec2-user/foxy/rust-common-tests/tests/integration.rs
+Category_name: integration
+================================
+     integration::app::config_discovery_test::test_config_file_precedence
+
+running 1 test
+test integration::app::config_discovery_test::test_config_file_precedence ... FAILED
+
+failures:
+
+---- integration::app::config_discovery_test::test_config_file_precedence stdout ----
+
+thread 'integration::app::config_discovery_test::test_config_file_precedence' panicked at tests/integration/app/config_discovery_test.rs:6:52:
+called `Result::unwrap()` on an `Err` value: "Binary not found at /opt/rust-service/test-rust-service. Run './actions/test.sh' to install it."
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    integration::app::config_discovery_test::test_config_file_precedence
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 15 filtered out; finished in 0.00s
+
+101
+     integration::app::logging_integration_test::test_log_file_creation
+
+running 1 test
+test integration::app::logging_integration_test::test_log_file_creation ... FAILED
+
+failures:
+
+---- integration::app::logging_integration_test::test_log_file_creation stdout ----
+RUNNING: test_log_file_creation - Testing log file creation and permissions
+Testing log file creation...
+Starting service...
+
+thread 'integration::app::logging_integration_test::test_log_file_creation' panicked at tests/integration/app/logging_integration_test.rs:15:10:
+Failed to start service: Os { code: 2, kind: NotFound, message: "No such file or directory" }
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    integration::app::logging_integration_test::test_log_file_creation
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 15 filtered out; finished in 0.00s
+
+101
+     integration::app::monitoring_integration_test::test_file_descriptor_limits
+
+running 1 test
+test integration::app::monitoring_integration_test::test_file_descriptor_limits ... FAILED
+
+failures:
+
+---- integration::app::monitoring_integration_test::test_file_descriptor_limits stdout ----
+RUNNING: test_file_descriptor_limits - Testing file descriptor limit validation exists
+Testing that fd limit checking is available...
+
+thread 'integration::app::monitoring_integration_test::test_file_descriptor_limits' panicked at tests/integration/app/monitoring_integration_test.rs:47:10:
+Failed to start service: Os { code: 2, kind: NotFound, message: "No such file or directory" }
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    integration::app::monitoring_integration_test::test_file_descriptor_limits
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 15 filtered out; finished in 0.00s
+
+101
+     integration::app::monitoring_integration_test::test_system_resource_monitoring
+
+running 1 test
+test integration::app::monitoring_integration_test::test_system_resource_monitoring ... FAILED
+
+failures:
+
+---- integration::app::monitoring_integration_test::test_system_resource_monitoring stdout ----
+RUNNING: test_system_resource_monitoring - Testing system resource monitoring exists
+Testing that monitoring functions are available...
+
+thread 'integration::app::monitoring_integration_test::test_system_resource_monitoring' panicked at tests/integration/app/monitoring_integration_test.rs:19:10:
+Failed to start service: Os { code: 2, kind: NotFound, message: "No such file or directory" }
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    integration::app::monitoring_integration_test::test_system_resource_monitoring
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 15 filtered out; finished in 0.00s
+
+101
+     integration::app::security_workflow_test::test_input_validation
+
+running 1 test
+test integration::app::security_workflow_test::test_input_validation ... FAILED
+
+failures:
+
+---- integration::app::security_workflow_test::test_input_validation stdout ----
+RUNNING: test_input_validation - Testing input validation and security checks
+Testing input validation with oversized service name...
+
+thread 'integration::app::security_workflow_test::test_input_validation' panicked at tests/integration/app/security_workflow_test.rs:40:10:
+Failed to start service: Os { code: 2, kind: NotFound, message: "No such file or directory" }
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    integration::app::security_workflow_test::test_input_validation
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 15 filtered out; finished in 0.00s
+
+101
+     integration::app::security_workflow_test::test_root_user_prevention
+
+running 1 test
+test integration::app::security_workflow_test::test_root_user_prevention ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 15 filtered out; finished in 0.00s
+
+0
+     integration::app::service_lifecycle_test::test_service_binary_exists
+
+running 1 test
+test integration::app::service_lifecycle_test::test_service_binary_exists ... FAILED
+
+failures:
+
+---- integration::app::service_lifecycle_test::test_service_binary_exists stdout ----
+RUNNING: test_service_binary_exists - Testing service binary installation
+
+thread 'integration::app::service_lifecycle_test::test_service_binary_exists' panicked at tests/integration/app/service_lifecycle_test.rs:9:5:
+Binary should exist at /opt/rust-service/test-rust-service
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    integration::app::service_lifecycle_test::test_service_binary_exists
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 15 filtered out; finished in 0.00s
+
+101
+     integration::app::service_lifecycle_test::test_service_config_exists
+
+running 1 test
+test integration::app::service_lifecycle_test::test_service_config_exists ... FAILED
+
+failures:
+
+---- integration::app::service_lifecycle_test::test_service_config_exists stdout ----
+RUNNING: test_service_config_exists - Testing service configuration installation
+
+thread 'integration::app::service_lifecycle_test::test_service_config_exists' panicked at tests/integration/app/service_lifecycle_test.rs:23:5:
+Config should exist at /etc/rust-service/service.toml
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    integration::app::service_lifecycle_test::test_service_config_exists
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 15 filtered out; finished in 0.00s
+
+101
+     integration::app::shutdown_handling_test::test_cleanup_on_exit
+
+running 1 test
+test integration::app::shutdown_handling_test::test_cleanup_on_exit ... FAILED
+
+failures:
+
+---- integration::app::shutdown_handling_test::test_cleanup_on_exit stdout ----
+RUNNING: test_cleanup_on_exit - Testing cleanup on forced process termination
+Testing cleanup on forced exit...
+
+thread 'integration::app::shutdown_handling_test::test_cleanup_on_exit' panicked at tests/integration/app/shutdown_handling_test.rs:62:10:
+Failed to start service: Os { code: 2, kind: NotFound, message: "No such file or directory" }
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    integration::app::shutdown_handling_test::test_cleanup_on_exit
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 15 filtered out; finished in 0.00s
+
+101
+     integration::app::shutdown_handling_test::test_graceful_shutdown
+
+running 1 test
+test integration::app::shutdown_handling_test::test_graceful_shutdown ... FAILED
+
+failures:
+
+---- integration::app::shutdown_handling_test::test_graceful_shutdown stdout ----
+RUNNING: test_graceful_shutdown - Testing graceful shutdown with SIGINT signal
+Testing graceful shutdown with SIGINT (3 seconds)...
+
+thread 'integration::app::shutdown_handling_test::test_graceful_shutdown' panicked at tests/integration/app/shutdown_handling_test.rs:17:48:
+Failed to read config file: Os { code: 2, kind: NotFound, message: "No such file or directory" }
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    integration::app::shutdown_handling_test::test_graceful_shutdown
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 15 filtered out; finished in 0.00s
+
+101
+     integration::app::test_graceful_shutdown_handling::test_graceful_shutdown_handling
+
+running 1 test
+test integration::app::test_graceful_shutdown_handling::test_graceful_shutdown_handling ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 15 filtered out; finished in 0.10s
+
+0
+     integration::app::test_prerequisites::test_debug_installation_exists
+
+running 1 test
+test integration::app::test_prerequisites::test_debug_installation_exists ... FAILED
+
+failures:
+
+---- integration::app::test_prerequisites::test_debug_installation_exists stdout ----
+
+thread 'integration::app::test_prerequisites::test_debug_installation_exists' panicked at tests/integration/app/test_prerequisites.rs:72:9:
+Integration test prerequisites not met: Binary not found at /opt/rust-service/test-rust-service. Run './actions/test.sh' to install it.
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    integration::app::test_prerequisites::test_debug_installation_exists
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 15 filtered out; finished in 0.00s
+
+101
+     integration::app::test_prerequisites_check::test_prerequisites_check
+
+running 1 test
+test integration::app::test_prerequisites_check::test_prerequisites_check ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 15 filtered out; finished in 0.10s
+
+0
+     integration::app::test_security_workflow_integration::test_security_workflow_integration
+
+running 1 test
+test integration::app::test_security_workflow_integration::test_security_workflow_integration ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 15 filtered out; finished in 0.10s
+
+0
+     integration::app::test_system_resource_monitoring::test_system_resource_monitoring
+
+running 1 test
+test integration::app::test_system_resource_monitoring::test_system_resource_monitoring ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 15 filtered out; finished in 0.10s
+
+0
+
+================================
+FILE: /home/ec2-user/foxy/rust-common-tests/tests/security_checks.rs
+Category_name: security_checks
+================================
+     security_checks::common::test_code_separation::test_code_separation
+
+running 1 test
+test security_checks::common::test_code_separation::test_code_separation ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 6 filtered out; finished in 0.10s
+
+0
+     security_checks::common::test_dependency_audit::test_dependency_audit
+
+running 1 test
+test security_checks::common::test_dependency_audit::test_dependency_audit ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 6 filtered out; finished in 0.66s
+
+0
+     security_checks::common::test_dependency_validation::test_dependency_validation
+
+running 1 test
+test security_checks::common::test_dependency_validation::test_dependency_validation ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 6 filtered out; finished in 0.10s
+
+0
+     security_checks::common::test_file_permissions::test_file_permissions
+
+running 1 test
+test security_checks::common::test_file_permissions::test_file_permissions ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 6 filtered out; finished in 0.10s
+
+0
+     security_checks::common::test_hardcoded_secrets::test_hardcoded_secrets
+
+running 1 test
+test security_checks::common::test_hardcoded_secrets::test_hardcoded_secrets ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 6 filtered out; finished in 0.10s
+
+0
+     security_checks::common::test_process_exit::test_process_exit
+
+running 1 test
+test security_checks::common::test_process_exit::test_process_exit ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 6 filtered out; finished in 0.10s
+
+0
+
+================================
+FILE: /home/ec2-user/foxy/rust-common-tests/tests/unit.rs
+Category_name: unit
+================================
+     unit::app::config_tests::test_config_validation_invalid_service_name
+
+running 1 test
+test unit::app::config_tests::test_config_validation_invalid_service_name ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 15 filtered out; finished in 0.00s
+
+0
+     unit::app::config_tests::test_config_validation_invalid_threshold
+
+running 1 test
+test unit::app::config_tests::test_config_validation_invalid_threshold ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 15 filtered out; finished in 0.00s
+
+0
+     unit::app::config_tests::test_config_validation_valid
+
+running 1 test
+test unit::app::config_tests::test_config_validation_valid ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 15 filtered out; finished in 0.00s
+
+0
+     unit::app::config_tests::test_service_config_loading
+
+running 1 test
+test unit::app::config_tests::test_service_config_loading ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 15 filtered out; finished in 0.00s
+
+0
+     unit::app::monitoring_tests::test_parse_memory_value_invalid
+
+running 1 test
+test unit::app::monitoring_tests::test_parse_memory_value_invalid ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 15 filtered out; finished in 0.00s
+
+0
+     unit::app::monitoring_tests::test_parse_memory_value_missing_prefix
+
+running 1 test
+test unit::app::monitoring_tests::test_parse_memory_value_missing_prefix ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 15 filtered out; finished in 0.00s
+
+0
+     unit::app::monitoring_tests::test_parse_memory_value_valid
+
+running 1 test
+test unit::app::monitoring_tests::test_parse_memory_value_valid ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 15 filtered out; finished in 0.00s
+
+0
+     unit::app::monitoring_unit_tests::test_parse_memory_value_invalid
+
+running 1 test
+test unit::app::monitoring_unit_tests::test_parse_memory_value_invalid ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 15 filtered out; finished in 0.00s
+
+0
+     unit::app::monitoring_unit_tests::test_parse_memory_value_missing_prefix
+
+running 1 test
+test unit::app::monitoring_unit_tests::test_parse_memory_value_missing_prefix ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 15 filtered out; finished in 0.00s
+
+0
+     unit::app::monitoring_unit_tests::test_parse_memory_value_valid
+
+running 1 test
+test unit::app::monitoring_unit_tests::test_parse_memory_value_valid ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 15 filtered out; finished in 0.00s
+
+0
+     unit::app::test_best_practices::test_best_practices
+
+running 1 test
+test unit::app::test_best_practices::test_best_practices ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 15 filtered out; finished in 0.92s
+
+0
+     unit::app::test_config_standards::test_config_standards
+
+running 1 test
+test unit::app::test_config_standards::test_config_standards ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 15 filtered out; finished in 0.11s
+
+0
+     unit::app::test_script_validation::test_script_validation
+
+running 1 test
+test unit::app::test_script_validation::test_script_validation ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 15 filtered out; finished in 0.10s
+
+0
+     unit::app::test_toml_lint::test_toml_lint
+
+running 1 test
+test unit::app::test_toml_lint::test_toml_lint ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 15 filtered out; finished in 0.11s
+
+0
+     unit::app::test_variable_naming::test_variable_naming
+
+running 1 test
+test unit::app::test_variable_naming::test_variable_naming ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 15 filtered out; finished in 0.11s
+
+0
+
+================================
+Test Summary:
+Total Tests: 72
+Total Integration: 2
+Total Security: 2
+Total Unit Tests: 2
+Passed: 52
+Failed: 20
+Errors: 0
+================================

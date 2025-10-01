@@ -368,7 +368,9 @@ dependencies = [
  "rust-common-tests",
  "rust-service",
  "serde",
+ "thiserror 1.0.69",
  "toml 0.9.7",
+ "walkdir",
 ]
 
 [[package]]

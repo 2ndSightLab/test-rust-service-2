@@ -1,18 +1,31 @@
 use std::process::Command;
 
+/// # Panics
+/// Panics if the cargo command fails to execute
 pub fn run_common_tests(test_type: &str) {
-    let output = Command::new("cargo")
-        .args(&["test", "--manifest-path", "../rust-common-tests/Cargo.toml", "--test", test_type])
+    let OUTPUT = Command::new("cargo")
+        .args([
+            "test",
+            "--manifest-path",
+            "../rust-common-tests/Cargo.toml",
+            "--test",
+            test_type,
+        ])
         .current_dir(".")
         .output()
-        .expect(&format!("Failed to execute {} tests", test_type));
+        .unwrap_or_else(|_| panic!("Failed to execute {test_type} tests"));
+
+    let STDOUT = String::from_utf8_lossy(&OUTPUT.stdout);
+    let STDERR = String::from_utf8_lossy(&OUTPUT.stderr);
+
+    // Print the OUTPUT so we can see individual test results
+    println!("{STDOUT}");
+    if !STDERR.is_empty() {
+        eprintln!("{STDERR}");
+    }
     
-    let stdout = String::from_utf8_lossy(&output.stdout);
-    let stderr = String::from_utf8_lossy(&output.stderr);
-    
-    // Print the output so we can see individual test results
-    println!("{}", stdout);
-    if !stderr.is_empty() {
-        eprintln!("{}", stderr);
+    // Check if the command failed
+    if !OUTPUT.status.success() {
+        panic!("Command failed with exit code: {:?}", OUTPUT.status.code());
     }
 }

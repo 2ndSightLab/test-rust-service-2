@@ -1,10 +1,12 @@
 #!/bin/bash
 
-SCRIPT_DIR=$(dirname "$(readlink -f "$0")")
+# Set standard directory variables and source all functions
+SCRIPTS_DIR="$(dirname "$(readlink -f "$0")")"
+for func in "$SCRIPTS_DIR/functions"/*.sh; do source "$func"; done
+PROJECT_DIR=$(get_project_dir)
 
-# Source config reading functions
-source "$SCRIPT_DIR/functions/read_config.sh"
-source "$SCRIPT_DIR/functions/find_config.sh"
+# Clean up any leftover cargo install temp directories
+rm -rf /tmp/cargo-install* 2>/dev/null
 
 # Get current architecture
 CURRENT_ARCH=$(rustc --version --verbose | grep host | cut -d' ' -f2)
@@ -40,6 +42,13 @@ esac
 
 if [ $? -eq 0 ]; then
     echo "Build completed successfully!"
+    
+    # Validate that the correct artifacts were created based on project type
+    # Get project type, name, and base directory
+    PROJECT_TYPE=$(get_project_type)
+    PROJECT_NAME=$(get_project_name)
+    
+    get_build_artifact "$PROJECT_TYPE" "$choice" "$PROJECT_DIR" "$CURRENT_ARCH" "$PROJECT_NAME" "true"
 else
     echo "Build failed!"
     exit 1

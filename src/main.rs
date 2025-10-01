@@ -1,9 +1,9 @@
+// This file should not change. Only the code in the action directory should change.
+
 pub mod action;
 
-pub use action::exec;
-pub use rust_service::Config;
-
-use rust_service::service::ServiceRunner;
+use action::exec;
+use rust_service::service::{Config, ServiceRunner};
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     ServiceRunner::<Config>::new()
