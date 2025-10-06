@@ -1,31 +1,45 @@
-use rust_service::Config;
-use rust_service::service::{Action, ServiceError};
-use std::thread;
-use std::time::Duration;
+use log::info;
+use rust_service::action::config::ActionConfig;
+use rust_service::service::config_reader::load_action_config;
+use rust_service::service::{Action, Config, ServiceError};
 
-pub struct MessageAction;
+struct ExecAction {
+    ACTION_CONFIG: ActionConfig,
+}
 
-impl Action<Config> for MessageAction {
-    fn name(&self) -> &str {
-        "message"
-    }
-
-    fn execute(&self, _config: &Config) -> Result<(), ServiceError> {
-        let config_content =
-            std::fs::read_to_string("config/action.toml").map_err(|e| ServiceError::Io(e))?;
-        let config: toml::Value =
-            toml::from_str(&config_content).map_err(|e| ServiceError::Parse(e))?;
-
-        let message = config["MESSAGE"].as_str().unwrap_or("Hello");
-        let time_interval = config["TIME_INTERVAL"].as_integer().unwrap_or(5) as u64;
-
-        loop {
-            println!("{}", message);
-            thread::sleep(Duration::from_secs(time_interval));
-        }
+impl ExecAction {
+    /// Creates a new `ExecAction` instance.
+    ///
+    /// # Errors
+    /// Returns `ServiceError` if action configuration cannot be loaded.
+    fn new() -> Result<Self, ServiceError> {
+        let ACTION_CONFIG = load_action_config()?;
+        Ok(Self { ACTION_CONFIG })
     }
 }
 
-pub fn new() -> Result<Box<dyn Action<Config>>, Box<dyn std::error::Error>> {
-    Ok(Box::new(MessageAction))
+impl Action<Config> for ExecAction {
+    fn execute(&self, _config: &Config) -> Result<(), ServiceError> {
+        let MESSAGE: String = self
+            .ACTION_CONFIG
+            .get("MESSAGE")
+            .unwrap_or_else(|| "Default message".to_string());
+        let TIME_INTERVAL: u64 = self.ACTION_CONFIG.get("TIME_INTERVAL").unwrap_or(5);
+
+        loop {
+            println!("{MESSAGE}");
+            info!("{MESSAGE}");
+            std::thread::sleep(std::time::Duration::from_secs(TIME_INTERVAL));
+        }
+    }
+
+    fn name(&self) -> &'static str {
+        "message"
+    }
+}
+
+/// # Errors
+/// Returns `ServiceError` if action configuration cannot be loaded.
+pub fn new() -> Result<Box<dyn Action<Config>>, ServiceError> {
+    Ok(Box::new(ExecAction::new()?))
 }

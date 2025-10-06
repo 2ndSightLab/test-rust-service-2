@@ -2,11 +2,14 @@
 # and will NEVER load configuration from the current working directory.
 # See src/config/config.rs ALLOWED_CONFIGS for the actual paths used.
 
+# Directory path where the service binary is installed
+INSTALL_DIR = "/opt/test-rust-service-2"
+
 # Directory path where log files will be written
 LOG_FILE_PATH = "/var/log/test-rust-service"
 
 # Configuration directory (same as install directory)
-CONFIG_DIR = "/opt/test-rust-service"
+CONFIG_DIR = "/opt/test-rust-service-2"
 
 # Name of the service (used for display and user validation)
 SERVICE_NAME = "test-rust-service"

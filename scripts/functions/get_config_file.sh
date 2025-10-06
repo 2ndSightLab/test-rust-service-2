@@ -30,6 +30,12 @@ get_config_file() {
     # Get local config file (same as test.sh)
     local LOCAL_CONFIG_FILE="$CONFIG_DIRECTORY/$CONFIG_FILE_NAME"
     
+    # For library projects, always use local config file
+    if [[ "$PROJECT_TYPE" == "lib" ]]; then
+        echo "$LOCAL_CONFIG_FILE"
+        return 0
+    fi
+    
     # Get install directory using the function
     local INSTALL_DIRECTORY=$(get_install_directory "$BUILD_TYPE")
     

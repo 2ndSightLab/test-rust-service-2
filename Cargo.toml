@@ -4,7 +4,7 @@ version = "0.1.0"
 edition = "2024"
 
 [package.metadata]
-install_dir = "/opt/test-rust-service"
+install_dir = "/opt/test-rust-service-2"
 rust_service_path = "../rust-service"
 
 [[bin]]

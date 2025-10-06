@@ -23,9 +23,11 @@ pub fn run_common_tests(test_type: &str) {
     if !STDERR.is_empty() {
         eprintln!("{STDERR}");
     }
-    
+
     // Check if the command failed
-    if !OUTPUT.status.success() {
-        panic!("Command failed with exit code: {:?}", OUTPUT.status.code());
-    }
+    assert!(
+        OUTPUT.status.success(),
+        "Command failed with exit code: {:?}",
+        OUTPUT.status.code()
+    );
 }

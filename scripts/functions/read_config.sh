@@ -12,13 +12,13 @@ read_config_value() {
     fi
     
     # Read the value and apply debug suffix if needed
-    local value=$(grep "^${key} = " "$config_file" | sed 's/.*= *"\([^"]*\)".*/\1/')
+    local VALUE=$(grep "^${key} = " "$config_file" | sed 's/.*= *"\([^"]*\)".*/\1/')
     
-    if [[ -n "$debug_suffix" && "$value" != *"$debug_suffix" ]]; then
-        value="${value}${debug_suffix}"
+    if [[ -n "$debug_suffix" && "$VALUE" != *"$debug_suffix" ]]; then
+        VALUE="${VALUE}${debug_suffix}"
     fi
     
-    echo "$value"
+    echo "$VALUE"
 }
 
 # Export function for use in other scripts
