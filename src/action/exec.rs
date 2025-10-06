@@ -1,6 +1,6 @@
 use log::info;
 use rust_service::action::config::ActionConfig;
-use rust_service::service::config_reader::load_action_config;
+use rust_service::service::config::config_reader::load_action_config;
 use rust_service::service::{Action, Config, ServiceError};
 
 struct ExecAction {

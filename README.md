@@ -1,6 +1,6 @@
-# test-rust-service
+# test-rust-service-2
 
-A Rust service binary that demonstrates how to use the [rust-service](../rust-service) library to build a secure, production-ready service. This service prints the current time periodically with comprehensive logging, configuration management, and security validation. Also uses common unit tests repository: rust-common-tests
+A Rust service binary that demonstrates how to use the [rust-service](../rust-service) library to build a secure, production-ready service. This service prints "Hello" messages periodically with comprehensive logging, configuration management, and security validation. Also uses common unit tests repository: rust-common-tests
 
 __Building and Testing__
 
@@ -23,7 +23,7 @@ __Building and Testing__
 
 ## Features
 
-- **Time Action**: Prints current UTC timestamp every configured interval
+- **Hello Action**: Prints "Hello" messages at configured intervals
 - **Security Validation**: Prevents running as root, validates user identity
 - **System Monitoring**: Monitors memory and disk usage thresholds
 - **Secure Logging**: File logging with proper permissions and locking
@@ -70,9 +70,9 @@ Run all the scripts under Building and Testing in order.
 
 After installation, the service runs continuously and outputs:
 ```
-Current time: 2025-09-29 06:30:34 UTC
-Current time: 2025-09-29 06:30:39 UTC
-Current time: 2025-09-29 06:30:44 UTC
+Hello
+Hello
+Hello
 ```
 
 Stop with Ctrl+C for graceful shutdown.
@@ -80,7 +80,7 @@ Stop with Ctrl+C for graceful shutdown.
 ## Code Structure
 
 - `src/main.rs`: Binary entry point that uses the rust-service library
-- `src/action/exec.rs`: Time action implementation
+- `src/action/exec.rs`: Hello action implementation
 - `scripts/`: Build, test, and deployment scripts
 - `config/`: Configuration files for service and action settings
 - `tests/`: Integration, unit, and security tests specific to this binary
