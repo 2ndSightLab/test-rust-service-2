@@ -29,8 +29,6 @@ for FUNC in "$SCRIPTS_DIR/functions"/*.sh; do source "$FUNC"; done
 PROJECT_DIR=$(get_project_dir)
 
 # Define configuration constants
-DEBUG_CHOICE=1
-RELEASE_CHOICE=2
 SUCCESS_EXIT=0
 ERROR_EXIT=1
 CONFIG_FILE_PERMISSIONS=644
@@ -48,16 +46,10 @@ if [[ "$PROJECT_TYPE" == "lib" ]]; then
     exit $SUCCESS_EXIT
 fi
 
-# Check for command line arguments or non-interactive mode
-if [[ "$1" == "--debug" ]] || [[ -n "$CI" ]] || [[ ! -t 0 ]]; then
-    CHOICE=$DEBUG_CHOICE
-elif [[ "$1" == "--release" ]]; then
-    CHOICE=$RELEASE_CHOICE
-else
-    echo "Select binary type to install:"
-    echo "1) Debug (all binaries including tests, examples, and benchmarks)"
-    echo "2) Release"
-    read -p "Enter choice (1 or 2): " CHOICE
+# Get target choice
+CHOICE=$(get_target "$1")
+if [[ $? -ne 0 ]]; then
+    exit $ERROR_EXIT
 fi
 
 case $CHOICE in
@@ -80,9 +72,6 @@ PROJECT_NAME=$(get_project_name)
 
 # Get current architecture
 CURRENT_ARCH=$(rustc --version --verbose | grep host | cut -d' ' -f2)
-
-# Get project type and check if installation is needed
-PROJECT_TYPE=$(get_project_type)
 
 # Get binary path for service projects
 BINARY_PATH=$(get_build_artifact "$PROJECT_TYPE" "$CHOICE" "$PROJECT_DIR" "$CURRENT_ARCH" "$PROJECT_NAME")
@@ -174,6 +163,16 @@ sudo chmod $CONFIG_FILE_PERMISSIONS "$CONFIG_DIR/service.toml"
 if [[ -f "$CONFIG_DIR/action.toml" ]]; then
     sudo chown root:root "$CONFIG_DIR/action.toml"
     sudo chmod $CONFIG_FILE_PERMISSIONS "$CONFIG_DIR/action.toml"
+fi
+
+# Check for CAP_NET_BIND_SERVICE capability setting
+CAP_NET_BIND_SERVICE=$(read_config_value "CAP_NET_BIND_SERVICE" "$CONFIG_DIR/service.toml" 2>/dev/null || echo "")
+CAP_NET_BIND_SERVICE=$(echo "$CAP_NET_BIND_SERVICE" | xargs)  # Remove leading/trailing spaces
+
+if [[ -n "$CAP_NET_BIND_SERVICE" ]]; then
+    echo "Setting network binding capability..."
+    sudo setcap "cap_net_bind_service=$CAP_NET_BIND_SERVICE" "$INSTALL_DIR/$PROJECT_NAME"
+    echo "Capability set: cap_net_bind_service=$CAP_NET_BIND_SERVICE"
 fi
 
 echo "Installation complete!"

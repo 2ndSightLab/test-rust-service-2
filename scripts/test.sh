@@ -47,15 +47,10 @@ SUCCESS_EXIT=0
 TEST_FAILURE_EXIT=101
 
 # Check for command line arguments or non-interactive mode
-if [[ "$1" == "--debug" ]] || [[ -n "$CI" ]] || [[ ! -t 0 ]]; then
-    CHOICE=$DEBUG_CHOICE
-elif [[ "$1" == "--release" ]]; then
-    CHOICE=$RELEASE_CHOICE
-else
-    echo "Select build type:"
-    echo "1) Debug (all binaries including tests, examples, and benchmarks)"
-    echo "2) Release"
-    read -p "Enter choice (1 or 2): " CHOICE
+# Get target choice
+CHOICE=$(get_target "$1")
+if [[ $? -ne 0 ]]; then
+    exit $ERROR_EXIT
 fi
 
 if [ $CHOICE -eq $DEBUG_CHOICE ]; then

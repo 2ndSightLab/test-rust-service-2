@@ -204,6 +204,16 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "42f5e15c9953c5e4ccceeb2e7382a716482c34515315f7b03532b8b4e8393d2d"
 
 [[package]]
+name = "privdrop"
+version = "0.5.6"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "70722a5a3728c9603c8d9469b64b8d1ee54dae6d74e24146da7f501b4c76540f"
+dependencies = [
+ "libc",
+ "nix",
+]
+
+[[package]]
 name = "proc-macro2"
 version = "1.0.101"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -271,6 +281,7 @@ dependencies = [
  "libc",
  "log",
  "nix",
+ "privdrop",
  "serde",
  "thiserror 2.0.17",
  "toml 0.9.7",

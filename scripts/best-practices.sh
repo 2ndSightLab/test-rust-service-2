@@ -67,12 +67,12 @@ PROJECT_NAME=$(get_project_name)
 CONFIG_FILE=$(get_config_file "$PROJECT_NAME" "$BUILD_TYPE")
 
 # Check project type first
-PROJECT_TYPE=$(get_project_type)
+PROJECT_DIR=$(cargo locate-project --workspace --message-format=plain | xargs dirname)
 
-# Check if we're using lib.toml and adjust accordingly
-if [[ "$CONFIG_FILE" == *"lib.toml" ]]; then
-    # Using lib config
-    if [[ "$PROJECT_TYPE" != "lib" ]]; then
+# Check if this is a library project and adjust accordingly
+if grep -q "^\[lib\]" "$PROJECT_DIR/Cargo.toml" && ! grep -q "^\[\[bin\]\]" "$PROJECT_DIR/Cargo.toml"; then
+    # This is a library project
+    if ! grep -q "^\[lib\]" "$PROJECT_DIR/Cargo.toml"; then
         INSTALL_DIR=$(get_install_directory "$BUILD_TYPE")
     fi
     CONFIG_DIR="/etc/rust-service"
@@ -81,8 +81,8 @@ if [[ "$CONFIG_FILE" == *"lib.toml" ]]; then
     LIB_NAME=$(read_config_value "LIB_NAME" "$CONFIG_FILE")
     BINARY_NAME="$LIB_NAME"
 else
-    # Using service config
-    if [[ "$PROJECT_TYPE" != "lib" ]]; then
+    # This is a service project
+    if ! grep -q "^\[lib\]" "$PROJECT_DIR/Cargo.toml"; then
         INSTALL_DIR=$(get_install_directory "$BUILD_TYPE")
     fi
     CONFIG_DIR=$(read_config_value "CONFIG_DIR" "$CONFIG_FILE")
@@ -101,8 +101,8 @@ PROJECT_NAME=$(get_project_name)
         BINARY_NAME="$PROJECT_NAME"
     # Finally fall back to lib config
     else
-        if [[ -f "$PROJECT_DIR/config/lib.toml" ]]; then
-            LIB_NAME=$(read_config_value "LIB_NAME" "$PROJECT_DIR/config/lib.toml")
+        if [[ -f "$PROJECT_DIR/config/service.toml" ]]; then
+            LIB_NAME=$(read_config_value "LIB_NAME" "$PROJECT_DIR/config/service.toml")
         fi
         BINARY_NAME="$LIB_NAME"
     fi
@@ -124,16 +124,15 @@ echo "5. Dependency tree analysis..."
 cargo tree --duplicates
 
 echo "6. Binary size analysis..."
-# Check if we're being called from a service project (look for service config in calling directory)
-CALLING_DIR=$(pwd)
-if [[ -f "$CALLING_DIR/config/service.toml" ]]; then
-    # We're being called from a service project, build and check its binary
+# Check project type using Cargo.toml
+if grep -q "^\[lib\]" "$PROJECT_DIR/Cargo.toml" && ! grep -q "^\[\[bin\]\]" "$PROJECT_DIR/Cargo.toml"; then
+    # We're in a library project that doesn't produce binaries
+    echo "Skipping binary size analysis for library project"
+elif grep -q "^\[\[bin\]\]" "$PROJECT_DIR/Cargo.toml"; then
+    # We're in a service project, build and check its binary
     RUSTFLAGS="-D warnings -A non_snake_case -A clippy::upper_case_acronyms" cargo build $BUILD_FLAG
     SERVICE_BINARY="$PROJECT_NAME"
     ls -lh target/$BUILD_TYPE/$SERVICE_BINARY
-elif [[ -f "$PROJECT_DIR/config/lib.toml" ]] && [[ ! -f "$PROJECT_DIR/config/service.toml" ]] && [[ ! -f "$PROJECT_DIR/src/main.rs" ]]; then
-    # We're in a library project that doesn't produce binaries
-    echo "Skipping binary size analysis for library project"
 else
     # Default behavior for other cases
     RUSTFLAGS="-D warnings -A non_snake_case -A clippy::upper_case_acronyms" cargo build $BUILD_FLAG

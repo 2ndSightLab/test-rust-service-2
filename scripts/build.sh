@@ -29,8 +29,6 @@ for FUNC in "$SCRIPT_DIR/functions"/*.sh; do source "$FUNC"; done
 PROJECT_DIR=$(get_project_dir)
 
 # Define configuration constants
-DEBUG_CHOICE=1
-RELEASE_CHOICE=2
 ERROR_EXIT=1
 
 # Clean up any leftover cargo install temp directories
@@ -40,16 +38,10 @@ rm -rf /tmp/cargo-install* 2>/dev/null
 CURRENT_ARCH=$(rustc --version --verbose | grep host | cut -d' ' -f2)
 
 echo "Building for architecture: $CURRENT_ARCH"
-# Check for command line arguments or non-interactive mode
-if [[ "$1" == "--debug" ]] || [[ -n "$CI" ]] || [[ ! -t 0 ]]; then
-    CHOICE=$DEBUG_CHOICE
-elif [[ "$1" == "--release" ]]; then
-    CHOICE=$RELEASE_CHOICE
-else
-    echo "Select build type:"
-    echo "1) Debug (all binaries including tests, examples, and benchmarks)"
-    echo "2) Release"
-    read -p "Enter choice (1 or 2): " CHOICE
+# Get target choice
+CHOICE=$(get_target "$1")
+if [[ $? -ne 0 ]]; then
+    exit $ERROR_EXIT
 fi
 
 case $CHOICE in

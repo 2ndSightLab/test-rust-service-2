@@ -2,6 +2,10 @@ use log::info;
 use rust_service::action::config::ActionConfig;
 use rust_service::service::config::config_reader::load_action_config;
 use rust_service::service::{Action, Config, ServiceError};
+use std::sync::{
+    Arc,
+    atomic::{AtomicBool, Ordering},
+};
 
 struct ExecAction {
     ACTION_CONFIG: ActionConfig,
@@ -19,18 +23,21 @@ impl ExecAction {
 }
 
 impl Action<Config> for ExecAction {
-    fn execute(&self, _config: &Config) -> Result<(), ServiceError> {
+    fn execute(&self, _config: &Config, running: Arc<AtomicBool>) -> Result<(), ServiceError> {
         let MESSAGE: String = self
             .ACTION_CONFIG
             .get("MESSAGE")
             .unwrap_or_else(|| "Default message".to_string());
         let TIME_INTERVAL: u64 = self.ACTION_CONFIG.get("TIME_INTERVAL").unwrap_or(5);
 
-        loop {
+        while running.load(Ordering::SeqCst) {
             println!("{MESSAGE}");
             info!("{MESSAGE}");
             std::thread::sleep(std::time::Duration::from_secs(TIME_INTERVAL));
         }
+
+        info!("Action shutting down gracefully");
+        Ok(())
     }
 
     fn name(&self) -> &'static str {

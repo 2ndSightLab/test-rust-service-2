@@ -29,16 +29,24 @@ fi
 for FUNC in "$SCRIPT_DIR/functions"/*.sh; do source "$FUNC"; done
 PROJECT_DIR=$(get_project_dir)
 
+# Check if this is a library project first
+PROJECT_TYPE=$(get_project_type)
+if [[ "$PROJECT_TYPE" == "lib" ]]; then
+    echo "No execution required for library projects."
+    echo "Libraries are used as dependencies and don't produce executable binaries."
+    exit $SUCCESS_EXIT
+fi
+
 # Define configuration constants
-DEBUG_CHOICE=1
-RELEASE_CHOICE=2
+SUCCESS_EXIT=0
 ERROR_EXIT=1
 CONFIG_FILE_PERMISSIONS=644
 
-echo "Select binary type to run:"
-echo "1) Debug"
-echo "2) Release"
-read -p "Enter choice (1 or 2): " CHOICE
+# Get target choice
+CHOICE=$(get_target "$1")
+if [[ $? -ne 0 ]]; then
+    exit $ERROR_EXIT
+fi
 
 case $CHOICE in
     1)

@@ -21,17 +21,17 @@ get_config_file() {
     if [[ "$HAS_BIN" == "true" ]]; then
         PROJECT_TYPE="service"
     elif [[ "$HAS_LIB" == "true" ]]; then
-        PROJECT_TYPE="lib"
+        PROJECT_TYPE="service"  # Use service.toml for both library and service projects
     fi
     
-    # Set config file name (same as test.sh)
-    local CONFIG_FILE_NAME="${PROJECT_TYPE}.toml"
+    # Set config file name (always service.toml now)
+    local CONFIG_FILE_NAME="service.toml"
     
     # Get local config file (same as test.sh)
     local LOCAL_CONFIG_FILE="$CONFIG_DIRECTORY/$CONFIG_FILE_NAME"
     
     # For library projects, always use local config file
-    if [[ "$PROJECT_TYPE" == "lib" ]]; then
+    if [[ "$PROJECT_TYPE" == "service" ]] && [[ "$HAS_LIB" == "true" ]] && [[ "$HAS_BIN" == "false" ]]; then
         echo "$LOCAL_CONFIG_FILE"
         return 0
     fi

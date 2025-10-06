@@ -3,12 +3,12 @@
 # Function to get local config file path
 get_local_config_file() {
     local LOCAL_CONFIG_DIR=$(get_local_config_directory)
-    local PROJECT_TYPE=$(get_project_type)
+    local PROJECT_DIR=$(cargo locate-project --workspace --message-format=plain | xargs dirname)
     
-    if [[ "$PROJECT_TYPE" == "service" ]]; then
+    if grep -q "^\[\[bin\]\]" "$PROJECT_DIR/Cargo.toml"; then
         echo "$LOCAL_CONFIG_DIR/service.toml"
     else
-        echo "$LOCAL_CONFIG_DIR/lib.toml"
+        echo "$LOCAL_CONFIG_DIR/service.toml"
     fi
 }
 
