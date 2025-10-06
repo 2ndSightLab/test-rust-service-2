@@ -30,25 +30,25 @@ rust-common-tests = { path = "../rust-common-tests" }
 walkdir = "2.0"
 
 [[test]]
-name = "integration"
-path = "tests/integration.rs"
+name = "integration_test_rust_service_2"
+path = "tests/integration_test_rust_service_2.rs"
 
 [[test]]
-name = "integration_common"
-path = "../rust-common-tests/tests/integration_common.rs"
+name = "security_checks_test_rust_service_2"
+path = "tests/security_checks_test_rust_service_2.rs"
 
 [[test]]
-name = "security_checks"
-path = "tests/security_checks.rs"
+name = "unit_tests_test_rust_service_2"
+path = "tests/unit_tests_test_rust_service_2.rs"
 
 [[test]]
-name = "security_checks_common"
-path = "../rust-common-tests/tests/security_checks_common.rs"
+name = "integration_rust_common_tests"
+path = "../rust-common-tests/tests/integration_rust_common_tests.rs"
 
 [[test]]
-name = "unit"
-path = "tests/unit.rs"
+name = "security_checks_rust_common_tests"
+path = "../rust-common-tests/tests/security_checks_rust_common_tests.rs"
 
 [[test]]
-name = "unit_tests_common"
-path = "../rust-common-tests/tests/unit_tests_common.rs"
+name = "unit_tests_rust_common_tests"
+path = "../rust-common-tests/tests/unit_tests_rust_common_tests.rs"
